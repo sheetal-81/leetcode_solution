@@ -1,0 +1,54 @@
+1027. Longest Arithmetic Subsequence
+
+Given an array nums of integers, return the length of the longest arithmetic subsequence in nums.
+Note that: A subsequence is an array that can be derived from another array by deleting some or no elements without changing the order of the remaining elements.
+A sequence seq is arithmetic if seq[i + 1] - seq[i] are all the same value (for 0 <= i < seq.length - 1).
+ 
+
+Example 1:
+Input: nums = [3,6,9,12]
+Output: 4
+Explanation:  The whole array is an arithmetic sequence with steps of length = 3.
+
+Example 2:
+Input: nums = [9,4,7,2,10]
+Output: 3
+Explanation:  The longest arithmetic subsequence is [4,7,10].
+
+Example 3:
+Input: nums = [20,1,15,3,10,5,8]
+Output: 4
+Explanation:  The longest arithmetic subsequence is [20,15,10,5].
+
+class Solution {
+    int n;
+    int[] nums;
+    Integer[][] dp;
+    public int longestArithSeqLength(int[] nums) {
+        this.nums = nums;
+        this.n = nums.length;
+        dp = new Integer[n+1][1002];
+        return dfs(0,-501);
+    }
+    public int dfs(int i, int diff){
+        if(i==n) return 0;
+        if(dp[i][diff+501]!=null) return dp[i][diff+501];
+        int res = 1;
+        if(diff==-501){
+            for(int j=i+1;j<n;j++){
+                int take = 1+dfs(j,nums[j]-nums[i]);
+                int notTake = dfs(j,diff);
+                res = Math.max(res,Math.max(take,notTake));
+            }
+        }else{
+            for(int j=i+1;j<n;j++){
+                int take = 0;
+                if(diff==nums[j]-nums[i]){
+                    take = 1+dfs(j,diff);
+                }
+                res = Math.max(res,take);
+            }
+        }
+        return dp[i][diff+501]=res;
+    }
+}
