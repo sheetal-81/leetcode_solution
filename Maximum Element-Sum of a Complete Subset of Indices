@@ -1,0 +1,14 @@
+class Solution {
+    public long maximumSum(List<Integer> nums) {
+        int n=nums.size();
+        long res=-1;
+        for(int a=1;a<=n;a++){
+            long cur=0;
+            for(int i=1;(long)a*i*i<=n;i++){
+                cur+=nums.get(i*i*a - 1);
+            }
+            res=Math.max(res,cur);
+        }
+        return res;
+    }
+}
